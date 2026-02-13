@@ -25,3 +25,5 @@ If you use Kleborate, please cite the paper: Lam, MMC. et al. A genomic surveill
 If you use the Kaptive calls for K and O locus typing please also cite: Wyres, KL. et al. Identification of _Klebsiella_ capsule synthesis loci from whole genome data. Microbial Genomics (2016). [http://mgen.microbiologyresearch.org/content/journal/mgen/10.1099/mgen.0.000102](http://mgen.microbiologyresearch.org/content/journal/mgen/10.1099/mgen.0.000102)
 
 If you use the ciprofloxacin resistance predictions, please cite the paper: Tsang et al. Ciprofloxacin resistance in _Klebsiella pneumoniae_: phenotype prediction from genotype and global distribution of resistance determinants. BioRxiv (2025). [https://doi.org/10.1101/2025.09.24.678318](https://doi.org/10.1101/2025.09.24.678318)
+
+[![DOI](https://zenodo.org/badge/76227387.svg)](https://doi.org/10.5281/zenodo.5220058)
