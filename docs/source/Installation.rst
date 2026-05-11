@@ -8,13 +8,13 @@ Kleborate requires the following software and libraries to be installed and avai
 
 
 * `Python <https://www.python.org/>`_ v3.9 or later
-* `Biopython <https://biopython.org/>`_ v1.75 or later
+* `Biopython <https://biopython.org/>`_ v1.85 or later
 * `Mash <https://github.com/marbl/Mash>`_ v2.0 or later
 * `Minimap2 <https://github.com/lh3/minimap2>`_ 
 * `Kaptive <https://github.com/klebgenomics/Kaptive>`_ 
 * `DNA Features Viewer <https://edinburgh-genome-foundry.github.io/DnaFeaturesViewer/>`_
 * `ectyper <https://github.com/phac-nml/ecoli_serotyping>`_ 
-* `stxtyper <https://github.com/ncbi/stxtyper>`_
+* `ncbi-stxtyper <https://github.com/ncbi/stxtyper>`_
 * `ncbi-amrfinderplus <https://github.com/ncbi/amr>`_
 * `EzClermont <https://github.com/nickp60/EzClermont>`_
 
@@ -24,7 +24,7 @@ Install Kleborate
 
 Create a conda environment and install Kleborate dependancies::
 
-   conda create -n klebsiella_analysis -c bioconda python=3.9 minimap2 mash ezclermont ectyper stxtyper ncbi-amrfinderplus -y
+   conda create -n klebsiella_analysis -c conda-forge -c bioconda --strict-channel-priority python=3.9 biopython=1.85 minimap2 mash ezclermont ectyper ncbi-stxtyper ncbi-amrfinderplus -y
    
 
 Activate the conda environment and install kleborate using pip::
