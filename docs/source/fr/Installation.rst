@@ -8,7 +8,7 @@ Kleborate exige que les logiciels et bibliothèques suivants soient installés e
 
 
 * `Python <https://www.python.org/>`_ v3.9 or later
-* `Biopython <https://biopython.org/>`_ v1.75 or later
+* `Biopython <https://biopython.org/>`_ v1.85
 * `Mash <https://github.com/marbl/Mash>`_ v2.0 or later
 * `Minimap2 <https://github.com/lh3/minimap2>`_ 
 * `Kaptive <https://github.com/klebgenomics/Kaptive>`_ 
@@ -24,7 +24,7 @@ Installer Kleborate
 
 Créer un environnement conda et installer les dépendances de Kleborate::
 
-   conda create -n klebsiella_analysis -c bioconda python=3.9 minimap2 mash ezclermont ectyper stxtyper ncbi-amrfinderplus -y
+   conda create -n klebsiella_analysis -c conda-forge -c bioconda --strict-channel-priority python=3.9 biopython=1.85 minimap2 mash ezclermont ectyper ncbi-stxtyper ncbi-amrfinderplus -y
    
 
 Activer l'environnement conda et installer kleborate en utilisant pip::
