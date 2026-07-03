@@ -2,7 +2,7 @@
 This module contains classes for interacting with bacterial genome assemblies and contigs and a pipeline
 to type them.
 
-Copyright 2025 Mary Maranga, Tom Stanton
+Copyright 2026 Mary Maranga, Tom Stanton
 https://github.com/klebgenomics/Kleborate/
 https://github.com/klebgenomics/Kaptive
 
@@ -15,18 +15,16 @@ details. You should have received a copy of the GNU General Public License along
 If not, see <https://www.gnu.org/licenses/>.
 """
 
-import os
 from pathlib import Path
-import shutil
 import sys
 
-from kaptive.database import load_database
-from kaptive.utils import check_cpus
-from kaptive.assembly import typing_pipeline
+from kaptive.core.genome import GenomeAssembly
+from kaptive.db import Database
+from kaptive.serotyping import Serotyper
 
 
 def description():
-    return 'In silico serotyping of K and L locus for the Klebsiella pneumoniae species complex'
+    return 'In silico serotyping of K and O antigens for the Klebsiella pneumoniae species complex'
 
 
 def prerequisite_modules():
@@ -45,13 +43,14 @@ def get_headers():
 
 
 def add_cli_options(parser):
-    module_name = os.path.basename(__file__)[:-3]
+    module_name = 'kaptive'
     group = parser.add_argument_group(f'{module_name} module')
     group.add_argument('-t', '--threads', type=check_cpus, default=8, metavar='',
                        help="Kaptive number of threads for alignment (default: %(default)s)")
-    group.add_argument('--k-db', type=load_database, default=load_database('kpsc_k'), metavar='',
+    # TODO: Was there a reason we exposed the databases to the CLI?
+    group.add_argument('--k-db', type=Database.load, default=Database.load('kpsc_k'), metavar='',
                        help="Kaptive database for K-locus typing (default: kpsc_k)")
-    group.add_argument('--o-db', type=load_database, default=load_database('kpsc_o'), metavar='',
+    group.add_argument('--o-db', type=Database.load, default=Database.load('kpsc_o'), metavar='',
                        help="Kaptive database for O-locus typing (default: kpsc_o)")
     return group
 
@@ -61,26 +60,35 @@ def check_cli_options(args):
         raise ValueError("The number of threads must be at least 1.")
 
 
-def check_external_programs():
-    if not shutil.which('minimap2'):
-        sys.exit('Error: could not find minimap2')
-    return ['minimap2']
-
-
 # define all headers
 
 all_headers = [
-    'Assembly', 'locus', 'type', 'locus confidence',
-    'locus problems', 'locus identity', 'Coverage', 'Length discrepancy',
-    'Expected genes in locus', 'Expected genes in locus, details',
-    'Missing expected genes', 'Other genes in locus',
-    'Other genes in locus, details', 'Expected genes outside locus',
-    'Expected genes outside locus, details', 'Other genes outside locus',
-    'Other genes outside locus, details', 'Truncated genes, details'
+    'Kaptive_version',
+    'Database_name',
+    'Database_version',
+    'Assembly',
+    'Best_match_locus',
+    'Best_match_type',
+    'Match_confidence',
+    'Problems',
+    'Identity',
+    'Coverage',
+    'Length_discrepancy',
+    'Expected_genes_in_locus',
+    'Expected_genes_in_locus_details',
+    'Missing_expected_genes',
+    'Other_genes_in_locus',
+    'Other_genes_in_locus_details',
+    'Expected_genes_outside_locus',
+    'Expected_genes_outside_locus_details',
+    'Other_genes_outside_locus',
+    'Other_genes_outside_locus_details',
+    'Truncated_genes_details',
+    'Extra_genes_details'
 ]
 
 
-def get_results(assembly, minimap2_index, args, previous_results):
+def get_results(assembly, minimap2_index, args, previous_results) -> dict[str, str]:
     full_headers, _ = get_headers()
 
     assembly_path = Path(assembly)
@@ -117,6 +125,4 @@ def get_results(assembly, minimap2_index, args, previous_results):
         if h not in full_headers:
             sys.exit(f'Error: results contained a value ({h}) that is not covered by the full headers')
 
-    results_dict = {k: (v if v else '-') for k, v in results_dict.items()}
-
-    return results_dict
+    return {k: (v or '-') for k, v in results_dict.items()}
